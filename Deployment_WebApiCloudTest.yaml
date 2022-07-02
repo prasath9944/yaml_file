@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployement
+metadata:
+	name: webapivaluesservice-deployement
+	labels:
+		app: WebApiValuesService
+spec:
+	replicase:
+		selector:
+			matchLabels:
+				app: WebApiValuesService
+		template:
+			metadata:
+				labels:
+					app: WebApiValuesService
+			spec:
+				containers:
+				-	name: webapivaluesservice
+					image: myfirstazurecr.azurecr.io/webapivaluesserviceimage:latest
+					ports:
+					-	containerPort: 8080
+					imagePullSecrets:
+					-	name: webapivaluessvcsecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+	name: webapivaluesservicesvc
+spec:
+	type: LoadBalancer
+	ports:
+	-port:	80
+	selector:
+		app: WebApiValuesService
+			
